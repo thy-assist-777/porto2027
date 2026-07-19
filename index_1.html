@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Porto — Jan 5–8, 2027</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --azulejo:#1d3f6e; --azulejo-deep:#12294a; --azulejo-soft:#e4edf7;
+    --paper:#f6f3ec; --paper-line:#e4ddcc; --card:#fff;
+    --ruby:#8c2f39; --gold:#b8902f; --ink:#24211b; --ink-soft:#6b6558;
+    --green:#3f6b4a; --red:#a13b3b; --amber:#c07a1e;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;line-height:1.5;padding-bottom:74px;}
+  .tile-rule{height:10px;width:100%;background-image:repeating-linear-gradient(45deg,var(--azulejo) 0 4px,var(--paper) 4px 8px);opacity:.55;}
+
+  header.hero{background:var(--azulejo);color:var(--paper);padding:34px 28px 26px;position:relative;overflow:hidden;}
+  header.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 18px 18px,rgba(246,243,236,.07) 2px,transparent 2px);background-size:36px 36px;pointer-events:none;}
+  .hero-inner{max-width:1060px;margin:0 auto;position:relative;}
+  h1{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(30px,5vw,50px);margin:0 0 8px;letter-spacing:-.01em;}
+  .sub{color:#d9dfea;font-size:14.5px;max-width:660px;}
+
+  .flight-strip{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px;}
+  .flight-chip{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:8px 13px;font-size:12.5px;color:#eaf0f8;font-family:'IBM Plex Mono',monospace;}
+  .flight-chip b{color:#fff;font-weight:600;}
+  .countdown{margin-top:16px;font-size:13px;color:#cdd8e8;}
+  .countdown b{color:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:15px;}
+  .rater-bar{margin-top:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:#e6ebf3;}
+  select,input[type=text],input[type=number],textarea{font-family:'IBM Plex Sans',sans-serif;font-size:13px;padding:6px 9px;border-radius:6px;border:1px solid var(--paper-line);background:#fff;color:var(--ink);}
+  .rater-bar select{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.35);}
+  .rater-bar select option{color:#111;}
+
+  /* Tabs */
+  .tabbar{background:var(--azulejo-deep);position:sticky;top:0;z-index:40;overflow-x:auto;}
+  .tabbar-inner{max-width:1060px;margin:0 auto;display:flex;gap:2px;padding:0 22px;}
+  .tab{background:transparent;border:none;color:#a9bcd6;font-size:13.5px;font-weight:500;padding:13px 15px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;font-family:'IBM Plex Sans',sans-serif;transition:.15s;}
+  .tab:hover{color:#fff;background:rgba(255,255,255,.06);}
+  .tab.active{color:#fff;border-bottom-color:var(--gold);}
+  .tab .count{font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.65;margin-left:4px;}
+
+  main{max-width:1060px;margin:0 auto;padding:30px 28px 40px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+  section{margin-bottom:44px;}
+  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap;}
+  .sec-title{font-family:'Fraunces',serif;font-size:24px;font-weight:600;margin:0;}
+  .sec-desc{color:var(--ink-soft);font-size:13.5px;margin:3px 0 0;max-width:680px;}
+
+  button{font-family:'IBM Plex Sans',sans-serif;cursor:pointer;border-radius:7px;border:1px solid var(--azulejo);background:#fff;color:var(--azulejo);padding:7px 13px;font-size:13px;font-weight:500;transition:.15s;}
+  button:hover{background:var(--azulejo);color:#fff;}
+  button.primary{background:var(--azulejo);color:#fff;}
+  button.primary:hover{background:var(--azulejo-deep);}
+  button.ghost{border-color:var(--paper-line);color:var(--ink-soft);}
+  button.ghost:hover{background:var(--paper-line);color:var(--ink);}
+  button.tiny{padding:3px 8px;font-size:11px;}
+  button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+  /* Day cards */
+  .day-card{background:var(--card);border:1px solid var(--paper-line);border-radius:11px;margin-bottom:16px;overflow:hidden;}
+  .day-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:14px 17px;background:#efe9da;border-bottom:1px solid var(--paper-line);flex-wrap:wrap;}
+  .day-label{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
+  .day-theme{font-family:'Fraunces',serif;font-size:19px;font-weight:600;margin-top:2px;}
+  .area-tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--azulejo-soft);color:var(--azulejo);margin-top:4px;}
+  .hours-bar{height:7px;background:#e8e2d2;border-radius:5px;overflow:hidden;margin-top:7px;width:165px;}
+  .hours-fill{background:var(--azulejo);height:100%;}
+  .hours-fill.tight{background:var(--amber);}
+  .hours-txt{font-size:11px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-top:3px;}
+
+  .slot{display:flex;gap:12px;padding:11px 17px;border-bottom:1px solid #f0ece1;align-items:flex-start;}
+  .slot:last-child{border-bottom:none;}
+  .slot-time{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--azulejo);min-width:56px;font-weight:500;padding-top:2px;}
+  .slot-body{flex:1;font-size:13.5px;min-width:0;}
+  .slot-name{font-weight:600;}
+  .slot-detail{color:var(--ink-soft);font-size:12.5px;margin-top:2px;}
+  .slot-flag{display:inline-block;font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:4px;margin-left:6px;}
+  .flag-book{background:#fdf0dc;color:var(--amber);}
+  .flag-fixed{background:#e9e4f2;color:#5a4b86;}
+  .linked{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--green);background:#eef4ee;padding:1px 7px;border-radius:4px;margin-left:6px;text-decoration:none;}
+  .linked:hover{background:#dfebe0;}
+  .empty-slot{color:#a8a294;font-style:italic;font-size:13px;}
+  .day-foot{padding:9px 17px;background:#faf8f2;font-size:12.5px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;}
+  .edit-grid{display:grid;grid-template-columns:64px 1fr;gap:8px;padding:12px 17px;background:#fbfaf5;align-items:start;}
+  .edit-grid input,.edit-grid select,.edit-grid textarea{width:100%;}
+  .edit-grid textarea{min-height:44px;resize:vertical;}
+
+  /* Idea cards (food / activities) */
+  .idea-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(252px,1fr));gap:14px;}
+  .idea{background:var(--card);border:1px solid var(--paper-line);border-radius:10px;padding:13px 15px;position:relative;display:flex;flex-direction:column;}
+  .idea.scheduled{border-left:3px solid var(--green);}
+  .idea-name{font-family:'Fraunces',serif;font-weight:600;font-size:16px;margin:0 0 5px;padding-right:18px;line-height:1.3;}
+  .idea-del{position:absolute;top:9px;right:9px;visibility:hidden;}
+  .idea:hover .idea-del{visibility:visible;}
+  .labels{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:7px;}
+  .label{font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:5px;background:#eee9dc;color:var(--ink-soft);}
+  .label.meal{background:#fce9d8;color:#a5622a;}
+  .label.wine{background:#f3e1e4;color:var(--ruby);}
+  .label.coffee{background:#e8e0d4;color:#6b5334;}
+  .label.street{background:#fdf3d4;color:#8a6d16;}
+  .label.time{background:var(--azulejo-soft);color:var(--azulejo);}
+  .label.indoor{background:#e2edf5;color:#3d6f92;}
+  .label.free{background:#e7f1e8;color:var(--green);}
+  .label.book{background:#fdf0dc;color:var(--amber);}
+  .idea-note{font-size:12.5px;color:var(--ink-soft);flex:1;}
+  .idea-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px;padding-top:8px;border-top:1px dashed var(--paper-line);flex-wrap:wrap;}
+  .stars{display:inline-flex;gap:2px;cursor:pointer;}
+  .star{font-size:16px;color:#d8d2c0;user-select:none;}
+  .star.on{color:var(--gold);}
+  .avg-line{font-size:11px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+  .maps-link{font-size:11.5px;color:var(--azulejo);text-decoration:none;}
+  .maps-link:hover{text-decoration:underline;}
+  .sched-row{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:11.5px;color:var(--ink-soft);}
+  .sched-row select{font-size:11.5px;padding:3px 6px;flex:1;}
+
+  /* Add form */
+  .add-box{background:#fff;border:1px dashed var(--paper-line);border-radius:10px;padding:15px;margin-bottom:18px;}
+  .add-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:9px;}
+  .add-row input[type=text]{flex:1;min-width:170px;}
+  .hint{font-size:11.5px;color:var(--ink-soft);margin-top:-3px;margin-bottom:9px;}
+  .chip-pick{display:flex;flex-wrap:wrap;gap:5px;}
+  .chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid var(--paper-line);background:#fff;color:var(--ink-soft);cursor:pointer;transition:.12s;}
+  .chip.on{background:var(--azulejo);color:#fff;border-color:var(--azulejo);}
+
+  .filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+  .filter-bar .chip.on{background:var(--gold);border-color:var(--gold);color:#fff;}
+
+  /* Packing */
+  .pack-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+  .pack-group{background:#fff;border:1px solid var(--paper-line);border-radius:9px;padding:13px 15px;}
+  .pack-group h4{margin:0 0 8px;font-size:12px;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);}
+  .pack-item{display:flex;align-items:center;gap:8px;font-size:13.5px;padding:3px 0;}
+  .pack-item input[type=checkbox]{accent-color:var(--azulejo);width:15px;height:15px;cursor:pointer;}
+  .pack-item.done span{text-decoration:line-through;color:#a8a294;}
+  .pack-item button{visibility:hidden;margin-left:auto;}
+  .pack-item:hover button{visibility:visible;}
+  .pack-prog{font-size:11.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+
+  /* Notes */
+  .notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:12px;}
+  .note-card{background:#fff;border:1px solid var(--paper-line);border-radius:9px;padding:12px 14px;position:relative;}
+  .note-cat{font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .note-text{font-size:13.5px;}
+  .note-card button{position:absolute;top:8px;right:8px;visibility:hidden;}
+  .note-card:hover button{visibility:visible;}
+  .inline-form{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;background:#fff;padding:13px;border-radius:9px;border:1px dashed var(--paper-line);}
+  .inline-form select,.inline-form input{flex:1;min-width:130px;}
+
+  /* Floating save bar */
+  .savebar{position:fixed;bottom:0;left:0;right:0;background:rgba(18,41,74,.97);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,.14);padding:11px 22px;display:flex;align-items:center;gap:12px;justify-content:center;z-index:60;flex-wrap:wrap;}
+  .savebar-inner{max-width:1060px;width:100%;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .save-meta{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#b9c7dc;flex:1;min-width:180px;}
+  .save-meta b{color:#9fd3ab;font-weight:600;}
+  .save-meta.dirty b{color:#e8c98a;}
+  .save-meta.err b{color:#e8a99a;}
+  #saveBtn{background:var(--gold);border-color:var(--gold);color:#241d06;font-weight:600;padding:8px 20px;}
+  #saveBtn:hover{background:#cfa337;border-color:#cfa337;color:#241d06;}
+  #saveBtn:disabled{opacity:.45;cursor:default;}
+  .toast{position:fixed;bottom:78px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--azulejo-deep);color:#fff;padding:10px 20px;border-radius:8px;font-size:13.5px;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:.28s;z-index:99;pointer-events:none;}
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+  @media (prefers-reduced-motion:reduce){.toast{transition:none;}}
+
+  @media (max-width:620px){
+    .slot{flex-direction:column;gap:4px;}
+    .slot-time{min-width:auto;}
+    .edit-grid{grid-template-columns:1fr;}
+    main{padding:24px 18px 30px;}
+    header.hero{padding:26px 18px 22px;}
+    .tabbar-inner{padding:0 12px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1>Porto, Jan 5 – 8, 2027</h1>
+    <div class="sub">Three nights in Ribeira with Mum and Dad — Port on the Gaia side, the old city on foot, and no day that starts before it needs to.</div>
+    <div class="flight-strip">
+      <div class="flight-chip">✈ OUT · <b>U2 8525</b> · LGW 09:30 → OPO 12:00 · Jan 5</div>
+      <div class="flight-chip">✈ BACK · <b>BA 2667</b> · OPO 18:05 → LGW 20:25 · Jan 8</div>
+    </div>
+    <div class="countdown" id="countdown"></div>
+    <div class="rater-bar">
+      <span>👤 You are:</span>
+      <select id="raterSelect"></select>
+      <span id="raterAddWrap" style="display:none;">
+        <input type="text" id="newRaterInput" placeholder="Name" style="width:105px;">
+        <button id="newRaterBtn" style="padding:5px 9px;font-size:12px;">Add</button>
+      </span>
+      <button id="raterAddToggle" class="ghost" style="border-color:rgba(255,255,255,.35);color:#e6ebf3;background:transparent;padding:5px 9px;font-size:12px;">+ add person</button>
+    </div>
+  </div>
+</header>
+<div class="tile-rule"></div>
+
+<nav class="tabbar"><div class="tabbar-inner" id="tabbar"></div></nav>
+
+<main>
+
+<!-- ITINERARY -->
+<div class="panel active" data-panel="itin">
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">The four days</h2>
+        <p class="sec-desc">Two of these are half-days once flights are counted. Anything you schedule from Food or Activities shows up here automatically.</p>
+      </div>
+      <button id="editItinBtn">✏️ Edit days</button>
+    </div>
+    <div id="itinWrap"></div>
+  </section>
+</div>
+
+<!-- FOOD -->
+<div class="panel" data-panel="food">
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Food &amp; drink</h2>
+        <p class="sec-desc">Paste a Google Maps link and the name fills itself in. Rate what you fancy, then drop the winners onto a day.</p>
+      </div>
+    </div>
+    <div class="add-box" id="foodAdd"></div>
+    <div class="filter-bar" id="foodFilter"></div>
+    <div class="idea-grid" id="foodGrid"></div>
+  </section>
+</div>
+
+<!-- ACTIVITIES -->
+<div class="panel" data-panel="acts">
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Activities &amp; sights</h2>
+        <p class="sec-desc">Same idea. The time labels matter most here — on a 4-day trip a full-day item costs you a quarter of everything.</p>
+      </div>
+    </div>
+    <div class="add-box" id="actAdd"></div>
+    <div class="filter-bar" id="actFilter"></div>
+    <div class="idea-grid" id="actGrid"></div>
+  </section>
+</div>
+
+<!-- PACKING -->
+<div class="panel" data-panel="pack">
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Packing</h2>
+        <p class="sec-desc">January in Porto: mild, wet, dark by half five. <span class="pack-prog" id="packProg"></span></p>
+      </div>
+      <button id="resetPackBtn" class="ghost">Uncheck all</button>
+    </div>
+    <div class="pack-cols" id="packCols"></div>
+    <div class="inline-form">
+      <select id="packGroupSel"></select>
+      <input type="text" id="packItemInput" placeholder="Add an item...">
+      <button id="addPackBtn" class="primary">Add</button>
+    </div>
+  </section>
+</div>
+
+<!-- NOTES -->
+<div class="panel" data-panel="notes">
+  <section>
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Trip notes</h2>
+        <p class="sec-desc">Booking deadlines and the things that are easy to forget on the day.</p>
+      </div>
+    </div>
+    <div class="notes-grid" id="notesGrid"></div>
+    <div class="inline-form">
+      <select id="noteCat">
+        <option>📅 Book ahead</option><option>💡 Tip</option><option>🧳 Logistics</option>
+        <option>💶 Money</option><option>🚇 Transport</option><option>📌 Other</option>
+      </select>
+      <input type="text" id="noteText" placeholder="Add a note...">
+      <button id="addNoteBtn" class="primary">Add</button>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<div class="savebar">
+  <div class="savebar-inner">
+    <span class="save-meta" id="saveMeta">Loading…</span>
+    <button id="saveBtn" disabled>Save</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  SUPABASE — your project values.
+// ═══════════════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://hzkigmztybepjcwxqjcx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_vIy25W9W8-sgHD0ddNftWA_1UN1oO0Z';
+const TRIP_ID      = 'porto-jan-2027';
+// ═══════════════════════════════════════════════════════════════
+
+const STORE_KEY='porto-planner-jan2027';
+const SCHEMA=3;
+
+// ---------- STATE ----------
+let raters=["Hui Ying","Mum","Dad"], currentRater=raters[0];
+let lastSavedBy=null, lastSavedAt=null;
+
+const CAP={1:8.0, 2:11.0, 3:11.0, 4:9.5};
+
+let itinerary=[
+  {day:1,date:"Mon, Jan 5",area:"Ribeira",theme:"Land & settle in",
+   foot:"Land 12:00. Metro Violet line to Trindade, or taxi ~€25. Dark by 17:30, so nothing outdoors after five.",
+   slots:[
+     {t:"12:00",n:"Land at OPO",d:"Bags, then metro or taxi (~35–45 min)",f:"fixed"},
+     {t:"13:30",n:"Check in at Eurostars Porto Douro",d:"Drop bags even if the room isn't ready",f:""},
+     {t:"14:30",n:"Late lunch nearby",d:"Close and easy — everyone will be tired",f:""},
+     {t:"16:00",n:"Cais da Ribeira waterfront",d:"Flat, right outside the hotel, catches the last light",f:""},
+     {t:"18:30",n:"Early dinner",d:"Keep it short",f:""}
+   ]},
+  {day:2,date:"Tue, Jan 6",area:"Vila Nova de Gaia",theme:"WOW & the Port cellars",
+   foot:"All on the Gaia side, and almost entirely indoors if it rains.",
+   slots:[
+     {t:"09:30",n:"Cross the lower deck of Dom Luís I",d:"Flatter than the upper deck, no lift on the Gaia side — ~13 min",f:""},
+     {t:"10:00",n:"WOW — The Wine Experience",d:"Museum then a seated tasting. 1.5–2 hrs",f:"book"},
+     {t:"12:30",n:"Lunch at WOW",d:"",f:"book"},
+     {t:"14:30",n:"Port cellar tour",d:"Optional — drop this first if the day feels long",f:"book"},
+     {t:"16:30",n:"Back over the bridge",d:"Or taxi from the Gaia side if legs are done",f:""},
+     {t:"19:30",n:"Dinner in Ribeira",d:"",f:""}
+   ]},
+  {day:3,date:"Wed, Jan 7",area:"Baixa / Aliados",theme:"The one full day",
+   foot:"Uphill from the river — the funicular by the hotel saves the worst of it. Bolsa and Lello are both indoors if it pours.",
+   slots:[
+     {t:"09:15",n:"Livraria Lello",d:"Opens 09:30. Go at opening, it's unbearable later",f:"book"},
+     {t:"10:30",n:"Clérigos church & square",d:"Skip the 240-step tower unless everyone's keen",f:""},
+     {t:"11:30",n:"Bolhão Market",d:"Wander and a coffee",f:""},
+     {t:"13:00",n:"Lunch in Baixa",d:"",f:""},
+     {t:"14:30",n:"Palácio da Bolsa",d:"Guided tour only, ~45 min — check English times",f:"book"},
+     {t:"16:00",n:"Sé Cathedral & terrace",d:"Downhill back to the hotel after",f:""},
+     {t:"19:30",n:"Last proper dinner",d:"Worth booking",f:"book"}
+   ]},
+  {day:4,date:"Thu, Jan 8",area:"Ribeira",theme:"Slow morning, then home",
+   foot:"Leave the hotel ~15:15 for the 18:05. The morning is genuinely yours — check out and leave the bags.",
+   slots:[
+     {t:"09:00",n:"Breakfast, check out, leave bags",d:"",f:""},
+     {t:"10:30",n:"São Bento azulejos",d:"8 min walk, free, takes 15 minutes",f:""},
+     {t:"11:30",n:"Last bits of shopping",d:"Port, tinned fish, Claus Porto soap",f:""},
+     {t:"13:00",n:"Unhurried lunch",d:"Near the hotel so you're not rushing back",f:""},
+     {t:"15:15",n:"Collect bags, head to OPO",d:"Allow 45 min plus security",f:"fixed"},
+     {t:"18:05",n:"BA2667 departs",d:"Lands LGW 20:25",f:"fixed"}
+   ]}
+];
+let editingItin=false;
+
+const FOOD_LABELS=["Meal","Street food","Wine","Coffee","Pastry","Market","Splurge","Quick","Book ahead"];
+const ACT_LABELS=["Half day","Full day","Under 2 hrs","Indoor","Outdoor","Free","Book ahead","Easy walking"];
+
+let food=[
+  {id:"f1",name:"Café Santiago",labels:["Meal","Quick"],note:"The classic francesinha. Heavy — one between two is plenty.",url:"",ratings:{"Hui Ying":4,"Dad":5},day:3},
+  {id:"f2",name:"Bolhão Market",labels:["Market","Coffee"],note:"Renovated 2022. Produce below, food stalls above.",url:"",ratings:{"Hui Ying":4},day:3},
+  {id:"f3",name:"VP — WOW terrace",labels:["Meal","Book ahead"],note:"Views back over Porto. Lighter menu, easy for a group.",url:"",ratings:{"Hui Ying":4,"Mum":4,"Dad":4},day:2},
+  {id:"f4",name:"Mira Mira",labels:["Meal","Splurge","Book ahead"],note:"Ricardo Costa of the two-star Yeatman. Swap for VP if you want one special meal.",url:"",ratings:{"Hui Ying":5,"Dad":2},day:null},
+  {id:"f5",name:"Manteigaria",labels:["Pastry","Quick"],note:"Pastéis de nata straight from the oven. Two minutes, no queue system.",url:"",ratings:{"Hui Ying":5,"Mum":4},day:null},
+  {id:"f6",name:"Port cellar tasting",labels:["Wine","Book ahead"],note:"Ferreira is the locals' pick, Sandeman the famous one.",url:"",ratings:{"Hui Ying":4,"Mum":3},day:2}
+];
+
+let acts=[
+  {id:"a1",name:"WOW — The Wine Experience",labels:["Half day","Indoor","Book ahead"],note:"Museum plus a seated tasting. ~€30 all-day pass covers more museums if you want them.",url:"",ratings:{"Hui Ying":5,"Mum":4,"Dad":3},day:2},
+  {id:"a2",name:"Livraria Lello",labels:["Under 2 hrs","Indoor","Book ahead"],note:"Timed tickets, ticket price comes off a book. Go at opening.",url:"",ratings:{"Hui Ying":4,"Mum":5},day:3},
+  {id:"a3",name:"Palácio da Bolsa",labels:["Under 2 hrs","Indoor","Book ahead"],note:"Guided tour only. The Arabian Room is the reason to go.",url:"",ratings:{"Hui Ying":3,"Dad":4},day:3},
+  {id:"a4",name:"São Bento station",labels:["Under 2 hrs","Free","Easy walking"],note:"20,000 azulejo tiles, 8 min from the hotel, takes fifteen minutes.",url:"",ratings:{"Hui Ying":5,"Mum":4},day:4},
+  {id:"a5",name:"Sé Cathedral & terrace",labels:["Under 2 hrs","Outdoor"],note:"Uphill, but the funicular by the hotel does the climbing.",url:"",ratings:{"Hui Ying":3},day:3},
+  {id:"a6",name:"Six-bridges river cruise",labels:["Under 2 hrs","Outdoor"],note:"Leaves from Cais da Ribeira. 50 min, ~€15 — cold in January but short.",url:"",ratings:{"Hui Ying":3,"Mum":4},day:null},
+  {id:"a7",name:"Foz do Douro",labels:["Half day","Outdoor"],note:"Seaside and Atlantic views, but 30 min each way on the tram.",url:"",ratings:{"Hui Ying":2,"Dad":3},day:null},
+  {id:"a8",name:"Douro Valley day trip",labels:["Full day","Outdoor","Book ahead"],note:"Would eat the only full day and land you back after dark. Save it for a longer trip.",url:"",ratings:{"Hui Ying":2,"Mum":3,"Dad":1},day:null}
+];
+
+let packing=[
+  {group:"Clothes",items:[
+    {t:"Waterproof jacket",done:false},{t:"Layers — 8–14°C",done:false},
+    {t:"Walking shoes with grip",done:false},{t:"One smarter outfit",done:false},
+    {t:"Small umbrella",done:false}
+  ]},
+  {group:"Documents",items:[
+    {t:"Passports — 3+ months validity",done:false},{t:"easyJet + BA boarding passes",done:false},
+    {t:"Hotel confirmation",done:false},{t:"Travel insurance / GHIC",done:false},
+    {t:"Lello & Bolsa tickets",done:false}
+  ]},
+  {group:"Practical",items:[
+    {t:"EU plug adapter (Type F)",done:false},{t:"Power bank",done:false},
+    {t:"Euros for markets",done:false},{t:"Regular medication",done:false},
+    {t:"Padding for Port bottles home",done:false}
+  ]}
+];
+
+let notes=[
+  {cat:"📅 Book ahead",text:"Livraria Lello — timed tickets online. Go at 09:30 opening on Day 3."},
+  {cat:"📅 Book ahead",text:"Palácio da Bolsa is guided-tour only. Confirm English tour times for Jan 7."},
+  {cat:"📅 Book ahead",text:"WOW: book the museum slot and the lunch table together."},
+  {cat:"🧳 Logistics",text:"Use the LOWER deck of Dom Luís I for Gaia. Upper deck is a steeper climb with no lift on the far side."},
+  {cat:"🚇 Transport",text:"Airport to city: Violet metro line to Trindade, ~30 min. Taxi is €25–30."},
+  {cat:"🚇 Transport",text:"The funicular next to the hotel saves the climb up to the cathedral."},
+  {cat:"💡 Tip",text:"Sunset ~17:30. Anything outdoors goes in the morning."},
+  {cat:"💡 Tip",text:"Day 4: check out but leave the bags at the hotel. You have until 15:15."},
+  {cat:"💶 Money",text:"Carry cash — smaller cafés and market stalls aren't reliably card-friendly."},
+  {cat:"📌 Other",text:"Only one full day. If something has to give, drop the Day 2 cellar tour, not Lello."}
+];
+
+// ---------- DEFAULTS ----------
+const DEFAULTS=JSON.parse(JSON.stringify({raters,itinerary,food,acts,packing,notes}));
+
+// ---------- DIRTY TRACKING ----------
+let dirty=false, saving=false, cloudErr=false;
+function markDirty(){ dirty=true; renderSaveBar(); }
+
+function currentState(){
+  return {schema:SCHEMA,savedAt:new Date().toISOString(),savedBy:currentRater,
+    raters,itinerary,food,acts,packing,notes};
+}
+function applyState(s){
+  if(!s||typeof s!=='object') throw new Error('bad payload');
+  if(s.raters) raters=s.raters;
+  if(s.itinerary) itinerary=s.itinerary;
+  if(s.food) food=s.food;
+  if(s.acts) acts=s.acts;
+  if(s.packing) packing=s.packing;
+  if(s.notes) notes=s.notes;
+  if(!raters.includes(currentRater)) currentRater=raters[0];
+  lastSavedAt = s.savedAt ? new Date(s.savedAt) : null;
+  lastSavedBy = s.savedBy || null;
+}
+
+// ---------- STORAGE ----------
+let storageOK=true;
+try{ localStorage.setItem('__p','1'); localStorage.removeItem('__p'); }catch(e){ storageOK=false; }
+function saveLocal(){ if(storageOK){ try{ localStorage.setItem(STORE_KEY,JSON.stringify(currentState())); }catch(e){} } }
+function loadLocal(){ try{ const r=localStorage.getItem(STORE_KEY); if(!r)return false; applyState(JSON.parse(r)); return true; }catch(e){ return false; } }
+
+const REST = SUPABASE_URL.replace(/\/$/,'') + '/rest/v1/trip_plans';
+const HEADERS = { 'apikey':SUPABASE_KEY, 'Content-Type':'application/json' };
+
+async function cloudPull(){
+  const r = await fetch(REST+'?id=eq.'+encodeURIComponent(TRIP_ID)+'&select=payload,updated_at',{headers:HEADERS});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  const rows = await r.json();
+  return rows.length?rows[0]:null;
+}
+async function cloudPush(){
+  const r = await fetch(REST,{method:'POST',
+    headers:{...HEADERS,'Prefer':'resolution=merge-duplicates,return=representation'},
+    body:JSON.stringify([{id:TRIP_ID,payload:currentState(),updated_at:new Date().toISOString()}])});
+  if(!r.ok) throw new Error('HTTP '+r.status+' '+(await r.text()).slice(0,100));
+  return r.json();
+}
+
+async function doSave(){
+  if(saving) return;
+  saving=true; renderSaveBar();
+  lastSavedBy=currentRater; lastSavedAt=new Date();
+  saveLocal();
+  try{
+    await cloudPush();
+    cloudErr=false; dirty=false;
+    toast('Saved');
+  }catch(e){
+    cloudErr=true;
+    toast('Saved on this device — cloud unreachable');
+    console.warn('cloud save failed:',e.message);
+  }
+  saving=false; renderSaveBar();
+}
+
+async function boot(){
+  loadLocal();
+  renderAll();
+  try{
+    const row = await cloudPull();
+    if(row&&row.payload){ applyState(row.payload); saveLocal(); }
+    cloudErr=false;
+  }catch(e){ cloudErr=true; console.warn('cloud load failed:',e.message); }
+  dirty=false;
+  renderAll(); renderSaveBar();
+}
+
+// warn before losing unsaved work
+window.addEventListener('beforeunload',e=>{
+  saveLocal();
+  if(dirty){ e.preventDefault(); e.returnValue=''; }
+});
+
+// ---------- HELPERS ----------
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const avg=r=>{const v=Object.values(r||{});return v.length?v.reduce((a,b)=>a+b,0)/v.length:0;};
+function toast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.className='toast';document.body.appendChild(t);}
+  t.textContent=msg; requestAnimationFrame(()=>t.classList.add('show'));
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200);
+}
+function timeAgo(d){
+  if(!d) return null;
+  const s=Math.floor((Date.now()-d.getTime())/1000);
+  if(s<60) return 'just now';
+  if(s<3600) return Math.floor(s/60)+' min ago';
+  const sameDay = d.toDateString()===new Date().toDateString();
+  const hhmm = d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  return sameDay ? 'at '+hhmm : d.toLocaleDateString([], {day:'numeric',month:'short'})+' '+hhmm;
+}
+// Pull a place name out of a Google Maps URL. Short goo.gl links are opaque
+// redirects and can't be resolved from the browser, so they return null.
+function parseMapsName(url){
+  try{
+    const m=url.match(/\/maps\/place\/([^\/@?]+)/);
+    if(m) return decodeURIComponent(m[1].replace(/\+/g,' ')).trim();
+    const s=url.match(/\/maps\/search\/([^\/@?]+)/);
+    if(s) return decodeURIComponent(s[1].replace(/\+/g,' ')).trim();
+    return null;
+  }catch(e){ return null; }
+}
+function labelClass(l){
+  const k=l.toLowerCase();
+  if(k==='meal') return 'meal';
+  if(k==='wine') return 'wine';
+  if(k==='coffee'||k==='pastry') return 'coffee';
+  if(k==='street food'||k==='market') return 'street';
+  if(k==='indoor') return 'indoor';
+  if(k==='free') return 'free';
+  if(k==='book ahead') return 'book';
+  if(k.includes('day')||k.includes('hrs')) return 'time';
+  return '';
+}
+function slotHours(slots){
+  if(!slots||slots.length<2) return 0;
+  const t=slots.map(s=>{const[a,b]=String(s.t).split(':').map(Number);return a*60+b;}).filter(n=>!isNaN(n));
+  if(t.length<2) return 0;
+  return (Math.max(...t)-Math.min(...t))/60;
+}
+
+// ---------- SAVE BAR ----------
+function renderSaveBar(){
+  const meta=document.getElementById('saveMeta'), btn=document.getElementById('saveBtn');
+  meta.className='save-meta';
+  if(saving){ meta.textContent='Saving…'; btn.disabled=true; btn.textContent='Saving…'; return; }
+  btn.textContent = dirty ? 'Save changes' : 'Saved';
+  btn.disabled = !dirty;
+  if(dirty){
+    meta.classList.add('dirty');
+    meta.innerHTML='<b>Unsaved changes</b>' + (lastSavedBy?' · last saved by '+esc(lastSavedBy)+' '+timeAgo(lastSavedAt):'');
+  }else if(cloudErr){
+    meta.classList.add('err');
+    meta.innerHTML='<b>On this device only</b> · cloud unreachable';
+  }else if(lastSavedBy){
+    meta.innerHTML='Last saved by <b>'+esc(lastSavedBy)+'</b> '+timeAgo(lastSavedAt);
+  }else{
+    meta.textContent='No changes yet';
+  }
+}
+document.getElementById('saveBtn').addEventListener('click',doSave);
+
+// ---------- TABS ----------
+const TABS=[
+  {id:'itin',label:'Itinerary'},
+  {id:'food',label:'Food & drink',count:()=>food.length},
+  {id:'acts',label:'Activities',count:()=>acts.length},
+  {id:'pack',label:'Packing',count:()=>{const a=packing.flatMap(g=>g.items);return a.filter(i=>i.done).length+'/'+a.length;}},
+  {id:'notes',label:'Notes',count:()=>notes.length}
+];
+let activeTab='itin';
+function renderTabs(){
+  document.getElementById('tabbar').innerHTML=TABS.map(t=>
+    '<button class="tab '+(t.id===activeTab?'active':'')+'" data-tab="'+t.id+'">'+t.label+
+    (t.count?'<span class="count">'+t.count()+'</span>':'')+'</button>').join('');
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{
+    activeTab=b.dataset.tab;
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.dataset.panel===activeTab));
+    renderTabs();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+}
+
+// ---------- COUNTDOWN ----------
+function renderCountdown(){
+  const dep=new Date('2027-01-05T09:30:00Z');
+  const d=Math.ceil((dep-new Date())/86400000);
+  document.getElementById('countdown').innerHTML = d>0
+    ? '<b>'+d+'</b> days to go · 3 nights · only <b>2</b> full days on the ground'
+    : 'Boa viagem';
+}
+
+// ---------- RATERS ----------
+function renderRaterSelect(){
+  document.getElementById('raterSelect').innerHTML=raters.map(r=>'<option '+(r===currentRater?'selected':'')+'>'+esc(r)+'</option>').join('');
+}
+document.getElementById('raterSelect').addEventListener('change',e=>{currentRater=e.target.value;renderFood();renderActs();});
+document.getElementById('raterAddToggle').addEventListener('click',()=>{
+  const w=document.getElementById('raterAddWrap'); w.style.display=w.style.display==='none'?'inline-flex':'none';
+});
+document.getElementById('newRaterBtn').addEventListener('click',()=>{
+  const v=document.getElementById('newRaterInput').value.trim();
+  if(v&&!raters.includes(v)){raters.push(v);currentRater=v;document.getElementById('newRaterInput').value='';
+    renderRaterSelect();renderFood();renderActs();markDirty();}
+});
+
+// ---------- ITINERARY ----------
+const AREAS=["Ribeira","Vila Nova de Gaia","Baixa / Aliados","Bolhão","Foz do Douro","Airport / travel"];
+function scheduledFor(dayNum){
+  return [...food.filter(f=>f.day===dayNum).map(f=>({...f,kind:'food'})),
+          ...acts.filter(a=>a.day===dayNum).map(a=>({...a,kind:'act'}))];
+}
+function renderItin(){
+  document.getElementById('itinWrap').innerHTML=itinerary.map((d,di)=>{
+    const used=slotHours(d.slots), cap=CAP[d.day]||9, pct=Math.min(100,used/cap*100);
+    let h='<div class="day-card"><div class="day-top"><div>'+
+      '<div class="day-label">Day '+d.day+' · '+esc(d.date)+'</div>'+
+      '<div class="day-theme">'+esc(d.theme||'Unplanned')+'</div>'+
+      '<span class="area-tag">'+esc(d.area)+'</span></div>'+
+      '<div><div class="hours-bar"><div class="hours-fill '+(pct>85?'tight':'')+'" style="width:'+pct+'%"></div></div>'+
+      '<div class="hours-txt">'+used.toFixed(1)+'h / '+cap.toFixed(1)+'h usable</div></div></div>';
+
+    if(editingItin){
+      h+='<div class="edit-grid"><label style="font-size:11px;color:var(--ink-soft);">Theme</label>'+
+        '<input type="text" class="e-theme" data-d="'+di+'" value="'+esc(d.theme)+'">'+
+        '<label style="font-size:11px;color:var(--ink-soft);">Area</label>'+
+        '<select class="e-area" data-d="'+di+'">'+AREAS.map(a=>'<option '+(a===d.area?'selected':'')+'>'+a+'</option>').join('')+'</select>'+
+        '<label style="font-size:11px;color:var(--ink-soft);">Note</label>'+
+        '<textarea class="e-foot" data-d="'+di+'">'+esc(d.foot)+'</textarea></div>';
+    }
+
+    h += d.slots.length ? d.slots.map((s,si)=>{
+      if(editingItin){
+        return '<div class="edit-grid">'+
+          '<input type="text" class="e-t" data-d="'+di+'" data-s="'+si+'" value="'+esc(s.t)+'">'+
+          '<div><input type="text" class="e-n" data-d="'+di+'" data-s="'+si+'" value="'+esc(s.n)+'" placeholder="What">'+
+          '<input type="text" class="e-d" data-d="'+di+'" data-s="'+si+'" value="'+esc(s.d)+'" placeholder="Detail" style="margin-top:5px;">'+
+          '<button class="tiny ghost" data-del="'+di+'-'+si+'" style="margin-top:5px;">Delete</button></div></div>';
+      }
+      const flag=s.f==='book'?'<span class="slot-flag flag-book">book ahead</span>':
+                 s.f==='fixed'?'<span class="slot-flag flag-fixed">fixed</span>':'';
+      return '<div class="slot"><div class="slot-time">'+esc(s.t)+'</div><div class="slot-body">'+
+        '<div class="slot-name">'+esc(s.n)+flag+'</div>'+
+        (s.d?'<div class="slot-detail">'+esc(s.d)+'</div>':'')+'</div></div>';
+    }).join('') : '<div class="slot"><span class="empty-slot">Nothing planned.</span></div>';
+
+    // items pulled in from the Food / Activities tabs
+    const linked=scheduledFor(d.day);
+    if(linked.length){
+      h+='<div class="slot" style="background:#fbfaf5;"><div class="slot-time">📌</div><div class="slot-body">'+
+        '<div class="slot-detail" style="margin:0 0 5px;">Picked for this day</div>'+
+        linked.map(x=>'<span class="linked">'+(x.kind==='food'?'🍽':'📍')+' '+esc(x.name)+'</span>').join(' ')+
+        '</div></div>';
+    }
+
+    if(editingItin){
+      h+='<div class="day-foot"><button class="tiny" data-add="'+di+'">+ Add slot</button>'+
+         '<button class="tiny ghost" data-clear="'+di+'">Clear day</button></div>';
+    }else if(d.foot){
+      h+='<div class="day-foot">'+esc(d.foot)+'</div>';
+    }
+    return h+'</div>';
+  }).join('');
+
+  if(editingItin){
+    document.querySelectorAll('[data-del]').forEach(b=>b.addEventListener('click',()=>{
+      const[di,si]=b.dataset.del.split('-').map(Number);
+      commitItin(); itinerary[di].slots.splice(si,1); renderItin(); markDirty();
+    }));
+    document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{
+      commitItin(); itinerary[+b.dataset.add].slots.push({t:"12:00",n:"New activity",d:"",f:""}); renderItin(); markDirty();
+    }));
+    document.querySelectorAll('[data-clear]').forEach(b=>b.addEventListener('click',()=>{
+      commitItin(); const d=itinerary[+b.dataset.clear]; d.slots=[]; renderItin(); markDirty();
+    }));
+    document.querySelectorAll('.edit-grid input,.edit-grid textarea,.edit-grid select')
+      .forEach(el=>el.addEventListener('input',markDirty));
+  }
+}
+function commitItin(){
+  document.querySelectorAll('.e-theme').forEach(el=>itinerary[+el.dataset.d].theme=el.value);
+  document.querySelectorAll('.e-area').forEach(el=>itinerary[+el.dataset.d].area=el.value);
+  document.querySelectorAll('.e-foot').forEach(el=>itinerary[+el.dataset.d].foot=el.value);
+  document.querySelectorAll('.e-t').forEach(el=>itinerary[+el.dataset.d].slots[+el.dataset.s].t=el.value);
+  document.querySelectorAll('.e-n').forEach(el=>itinerary[+el.dataset.d].slots[+el.dataset.s].n=el.value);
+  document.querySelectorAll('.e-d').forEach(el=>itinerary[+el.dataset.d].slots[+el.dataset.s].d=el.value);
+}
+document.getElementById('editItinBtn').addEventListener('click',()=>{
+  const b=document.getElementById('editItinBtn');
+  if(editingItin){ commitItin(); editingItin=false; b.textContent='✏️ Edit days'; markDirty(); }
+  else{ editingItin=true; b.textContent='✓ Done editing'; }
+  renderItin();
+});
+
+// ---------- IDEA LISTS (food + activities) ----------
+let foodFilter=null, actFilter=null;
+
+function renderAddBox(kind){
+  const labels = kind==='food'?FOOD_LABELS:ACT_LABELS;
+  const p = kind==='food'?'food':'act';
+  document.getElementById(kind==='food'?'foodAdd':'actAdd').innerHTML=
+    '<div class="add-row"><input type="text" id="'+p+'Url" placeholder="Paste a Google Maps link (optional)"></div>'+
+    '<div class="hint">Full maps.google.com links fill in the name automatically. Short goo.gl links can\u2019t be read, so type the name yourself.</div>'+
+    '<div class="add-row"><input type="text" id="'+p+'Name" placeholder="Name"></div>'+
+    '<div class="add-row"><input type="text" id="'+p+'Note" placeholder="Why it\u2019s worth it (optional)"></div>'+
+    '<div class="chip-pick" id="'+p+'Chips">'+labels.map(l=>'<button class="chip" data-l="'+l+'">'+l+'</button>').join('')+'</div>'+
+    '<div class="add-row" style="margin-top:11px;margin-bottom:0;"><button class="primary" id="'+p+'Add">+ Add</button></div>';
+
+  const urlEl=document.getElementById(p+'Url'), nameEl=document.getElementById(p+'Name');
+  urlEl.addEventListener('input',()=>{
+    const n=parseMapsName(urlEl.value.trim());
+    if(n && !nameEl.value.trim()) nameEl.value=n;
+  });
+  const picked=new Set();
+  document.querySelectorAll('#'+p+'Chips .chip').forEach(c=>c.addEventListener('click',()=>{
+    const l=c.dataset.l;
+    if(picked.has(l)){picked.delete(l);c.classList.remove('on');}
+    else{picked.add(l);c.classList.add('on');}
+  }));
+  document.getElementById(p+'Add').addEventListener('click',()=>{
+    const name=nameEl.value.trim();
+    if(!name){ toast('Give it a name first'); nameEl.focus(); return; }
+    const item={id:kind[0]+Date.now(),name,labels:[...picked],
+      note:document.getElementById(p+'Note').value.trim(),url:urlEl.value.trim(),ratings:{},day:null};
+    (kind==='food'?food:acts).unshift(item);
+    renderAddBox(kind);
+    kind==='food'?renderFood():renderActs();
+    renderTabs(); markDirty(); toast('Added');
+  });
+}
+
+function renderIdeas(kind){
+  const arr = kind==='food'?food:acts;
+  const filter = kind==='food'?foodFilter:actFilter;
+  const labels = kind==='food'?FOOD_LABELS:ACT_LABELS;
+  const gridId = kind==='food'?'foodGrid':'actGrid';
+  const filtId = kind==='food'?'foodFilter':'actFilter';
+
+  // filter chips
+  document.getElementById(filtId).innerHTML=
+    '<button class="chip '+(!filter?'on':'')+'" data-f="">All <span style="opacity:.6">'+arr.length+'</span></button>'+
+    labels.map(l=>{
+      const n=arr.filter(x=>(x.labels||[]).includes(l)).length;
+      return n? '<button class="chip '+(filter===l?'on':'')+'" data-f="'+l+'">'+l+' <span style="opacity:.6">'+n+'</span></button>':'';
+    }).join('');
+  document.querySelectorAll('#'+filtId+' [data-f]').forEach(b=>b.addEventListener('click',()=>{
+    const v=b.dataset.f||null;
+    if(kind==='food') foodFilter=v; else actFilter=v;
+    renderIdeas(kind);
+  }));
+
+  const shown = filter? arr.filter(x=>(x.labels||[]).includes(filter)) : arr;
+  const sorted = [...shown].sort((a,b)=>avg(b.ratings)-avg(a.ratings));
+
+  document.getElementById(gridId).innerHTML = sorted.length? sorted.map(x=>{
+    const a=avg(x.ratings), mine=(x.ratings||{})[currentRater]||0, n=Object.keys(x.ratings||{}).length;
+    let stars='<div class="stars" data-id="'+x.id+'" data-kind="'+kind+'">';
+    for(let i=1;i<=5;i++) stars+='<span class="star '+(i<=mine?'on':'')+'" data-v="'+i+'">★</span>';
+    stars+='</div>';
+    return '<div class="idea '+(x.day?'scheduled':'')+'">'+
+      '<button class="tiny ghost idea-del" data-del="'+kind+':'+x.id+'">✕</button>'+
+      '<div class="idea-name">'+esc(x.name)+'</div>'+
+      '<div class="labels">'+(x.labels||[]).map(l=>'<span class="label '+labelClass(l)+'">'+esc(l)+'</span>').join('')+'</div>'+
+      (x.note?'<div class="idea-note">'+esc(x.note)+'</div>':'<div class="idea-note"></div>')+
+      '<div class="sched-row"><span>Day:</span><select data-day="'+kind+':'+x.id+'">'+
+        '<option value="">— not scheduled —</option>'+
+        itinerary.map(d=>'<option value="'+d.day+'" '+(x.day===d.day?'selected':'')+'>Day '+d.day+' · '+esc(d.date.split(', ')[1]||d.date)+'</option>').join('')+
+      '</select></div>'+
+      '<div class="idea-foot">'+stars+
+        '<span class="avg-line">'+(n?a.toFixed(1)+'★ · '+n:'unrated')+'</span>'+
+        (x.url?'<a class="maps-link" href="'+esc(x.url)+'" target="_blank" rel="noopener">map ↗</a>':'')+
+      '</div></div>';
+  }).join('') : '<p style="color:var(--ink-soft);font-size:13.5px;">Nothing with that label yet.</p>';
+
+  // stars
+  document.querySelectorAll('#'+gridId+' .stars').forEach(el=>{
+    el.querySelectorAll('.star').forEach(s=>s.addEventListener('click',()=>{
+      const list = el.dataset.kind==='food'?food:acts;
+      const it = list.find(z=>z.id===el.dataset.id);
+      if(!it.ratings) it.ratings={};
+      if(it.ratings[currentRater]===+s.dataset.v) delete it.ratings[currentRater];
+      else it.ratings[currentRater]=+s.dataset.v;
+      renderIdeas(kind); markDirty();
+    }));
+  });
+  // day assignment
+  document.querySelectorAll('#'+gridId+' [data-day]').forEach(sel=>sel.addEventListener('change',()=>{
+    const [k,id]=sel.dataset.day.split(':');
+    const it=(k==='food'?food:acts).find(z=>z.id===id);
+    it.day = sel.value? +sel.value : null;
+    renderIdeas(kind); renderItin(); markDirty();
+  }));
+  // delete
+  document.querySelectorAll('#'+gridId+' [data-del]').forEach(b=>b.addEventListener('click',()=>{
+    const [k,id]=b.dataset.del.split(':');
+    const list=(k==='food'?food:acts);
+    const i=list.findIndex(z=>z.id===id);
+    if(i>-1){ list.splice(i,1); renderIdeas(kind); renderItin(); renderTabs(); markDirty(); }
+  }));
+}
+const renderFood=()=>renderIdeas('food');
+const renderActs=()=>renderIdeas('acts');
+
+// ---------- PACKING ----------
+function renderPacking(){
+  document.getElementById('packCols').innerHTML=packing.map((g,gi)=>
+    '<div class="pack-group"><h4>'+esc(g.group)+'</h4>'+g.items.map((it,ii)=>
+      '<label class="pack-item '+(it.done?'done':'')+'"><input type="checkbox" data-p="'+gi+'-'+ii+'" '+(it.done?'checked':'')+'>'+
+      '<span>'+esc(it.t)+'</span><button class="tiny ghost" data-pd="'+gi+'-'+ii+'">✕</button></label>').join('')+'</div>').join('');
+  document.getElementById('packGroupSel').innerHTML=packing.map((g,i)=>'<option value="'+i+'">'+esc(g.group)+'</option>').join('');
+  const all=packing.flatMap(g=>g.items);
+  document.getElementById('packProg').textContent=all.filter(i=>i.done).length+' of '+all.length+' packed';
+  document.querySelectorAll('[data-p]').forEach(cb=>cb.addEventListener('change',()=>{
+    const[g,i]=cb.dataset.p.split('-').map(Number);
+    packing[g].items[i].done=cb.checked; renderPacking(); renderTabs(); markDirty();
+  }));
+  document.querySelectorAll('[data-pd]').forEach(b=>b.addEventListener('click',e=>{
+    e.preventDefault(); const[g,i]=b.dataset.pd.split('-').map(Number);
+    packing[g].items.splice(i,1); renderPacking(); renderTabs(); markDirty();
+  }));
+}
+document.getElementById('addPackBtn').addEventListener('click',()=>{
+  const t=document.getElementById('packItemInput').value.trim(); if(!t) return;
+  packing[+document.getElementById('packGroupSel').value].items.push({t,done:false});
+  document.getElementById('packItemInput').value='';
+  renderPacking(); renderTabs(); markDirty();
+});
+document.getElementById('packItemInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('addPackBtn').click();});
+document.getElementById('resetPackBtn').addEventListener('click',()=>{
+  packing.forEach(g=>g.items.forEach(i=>i.done=false)); renderPacking(); renderTabs(); markDirty();
+});
+
+// ---------- NOTES ----------
+function renderNotes(){
+  document.getElementById('notesGrid').innerHTML=notes.map((n,i)=>
+    '<div class="note-card"><button class="tiny ghost" data-nd="'+i+'">✕</button>'+
+    '<div class="note-cat">'+esc(n.cat)+'</div><div class="note-text">'+esc(n.text)+'</div></div>').join('');
+  document.querySelectorAll('[data-nd]').forEach(b=>b.addEventListener('click',()=>{
+    notes.splice(+b.dataset.nd,1); renderNotes(); renderTabs(); markDirty();
+  }));
+}
+document.getElementById('addNoteBtn').addEventListener('click',()=>{
+  const t=document.getElementById('noteText').value.trim(); if(!t) return;
+  notes.unshift({cat:document.getElementById('noteCat').value,text:t});
+  document.getElementById('noteText').value='';
+  renderNotes(); renderTabs(); markDirty();
+});
+document.getElementById('noteText').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('addNoteBtn').click();});
+
+// ---------- RENDER ALL ----------
+function renderAll(){
+  renderTabs(); renderRaterSelect(); renderItin();
+  renderAddBox('food'); renderAddBox('acts');
+  renderFood(); renderActs(); renderPacking(); renderNotes();
+}
+
+// ---------- GO ----------
+renderCountdown();
+renderSaveBar();
+boot();
+</script>
+</body>
+</html>
